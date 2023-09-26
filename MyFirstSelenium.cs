@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,22 +23,40 @@ namespace selenium_example
         [Test]
         public void test()
         {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(2));
             driver.Url = "https://localhost:44316/";
 
-            driver.FindElement(By.Id("navbar-about")).Click();
-            driver.FindElement(By.Id("about-title")).Displayed.Equals(true);
+            var aboutLink = driver.FindElement(By.Id("navbar-about"));
+            wait.Until(d => aboutLink.Displayed);
+            aboutLink.Click();
 
-            driver.FindElement(By.Id("navbar-contact")).Click();
-            driver.FindElement(By.Id("contact-title")).Displayed.Equals(true);
+            var aboutPage = driver.FindElement(By.Id("about-title"));
+            wait.Until(d => aboutPage.Displayed);
 
-            driver.FindElement(By.Id("navbar-home")).Click();
-            driver.FindElement(By.Id("home-title")).Displayed.Equals(true);
+            var contactLink = driver.FindElement(By.Id("navbar-contact"));
+            wait.Until(d => contactLink.Displayed);
+            contactLink.Click();
+
+            var contactPage = driver.FindElement(By.Id("contact-title"));
+            wait.Until(d => contactPage.Displayed);
+
+            var homeLink = driver.FindElement(By.Id("navbar-home"));
+            wait.Until(d => homeLink.Displayed);
+            homeLink.Click();
+
+            var homePage = driver.FindElement(By.Id("home-title"));
+            wait.Until(d => homePage.Displayed);
+        }
+
+        private void wait(bool displayed)
+        {
+            throw new NotImplementedException();
         }
 
         [TearDown]
         public void closeBrowser()
         {
-            //driver.Close();
+            driver.Close();
         }
     }
 }
